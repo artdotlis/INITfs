@@ -1,0 +1,27 @@
+services:
+    nginx:
+        environment:
+            - NODE_HOST=dev
+        depends_on:
+            - dev
+    dev:
+        user: vscode
+        env_file:
+            - .env
+        environment:
+            - NODE_HOST=dev
+        build:
+            context: .
+            dockerfile: .devcontainer/dev.Dockerfile
+            args:
+                USERNAME: vscode
+                USER_UID: 1000
+                USER_GID: 1000
+                WORK_DIR: /workspace
+                BIN_DEPLOY_PREP: ${BIN_DEPLOY_PREP}
+                BIN_DEPLOY_REQ: ${BIN_DEPLOY_REQ}
+        volumes:
+            - .:/workspace
+            - ~/.config/git/config:/etc/gitconfig
+        networks:
+            - initfs

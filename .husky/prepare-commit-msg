@@ -1,0 +1,3 @@
+#!/bin/sh
+eval make dev
+exec </dev/tty && bunx cz --hook || true

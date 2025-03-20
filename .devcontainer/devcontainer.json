@@ -1,0 +1,35 @@
+{
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "formulahendry.code-runner",
+                "streetsidesoftware.code-spell-checker",
+                "kamikillerto.vscode-colorize",
+                "ms-azuretools.vscode-docker",
+                "donjayamanne.githistory",
+                "eamodio.gitlens",
+                "oderwat.indent-rainbow",
+                "yzhang.markdown-all-in-one",
+                "christian-kohler.path-intellisense",
+                "foxundermoon.shell-format",
+                "ms-vscode.test-adapter-converter",
+                "hbenl.vscode-test-explorer",
+                "Gruntfuggly.todo-tree",
+                "uctakeoff.vscode-counter",
+                "aaron-bond.better-comments",
+                "tamasfe.even-better-toml",
+                "wix.vscode-import-cost",
+                "Vue.volar"
+            ]
+        }
+    },
+    "dockerComposeFile": ["../docker-compose.yml", "dev.docker-compose.yml"],
+    "name": "initfs",
+    "postAttachCommand": "make dev",
+    "runServices": ["nginx", "redis"],
+    "service": "dev",
+    "shutdownAction": "stopCompose",
+    "updateRemoteUserUID": true,
+    "remoteUser": "vscode",
+    "workspaceFolder": "/workspace"
+}

@@ -1,0 +1,58 @@
+services:
+    nginx:
+        image: nginx:stable-alpine
+        env_file:
+            - .env
+        environment:
+            - NODE_HOST=app
+        command: /bin/sh /entry.sh
+        networks:
+            - initfs
+        ports:
+            - ${NGINX_PORT}:80
+        volumes:
+            - ./${CONFIG_WEB}:/etc/nginx/templates
+            - ./${BIN_NGINX_ENTRY}:/entry.sh
+        depends_on:
+            - app
+    redis:
+        image: docker.io/redis:alpine
+        restart: always
+        healthcheck:
+            test: ['CMD', 'redis-cli', 'ping']
+            interval: 6s
+            timeout: 6s
+            retries: 10
+        ports:
+            - 6381:6379
+        networks:
+            - initfs
+    app:
+        env_file:
+            - .env
+            - packages/web/.env
+        environment:
+            - NODE_HOST=app
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+            args:
+                USERNAME: runner
+                USER_UID: 1000
+                USER_GID: 1000
+                STAGE: 'false'
+                BIN_DEPLOY: ${BIN_DEPLOY}
+                DOCKER_ENV_DIR: ${DOCKER_ENV_DIR}
+                BIN_DEPLOY_REQ_SERVER: ${BIN_DEPLOY_REQ_SERVER}
+                NODE_VER: ${NODE_VER}
+                BUN_VER: ${BUN_VER}
+                PM2_WORKER: ${PM2_WORKER}
+        networks:
+            - initfs
+        depends_on:
+            redis:
+                condition: service_healthy
+networks:
+    initfs:
+        name: initfs
+        driver: bridge

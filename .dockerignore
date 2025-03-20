@@ -1,0 +1,16 @@
+*
+
+!/packages
+
+!/bin
+!/configs
+
+!Makefile
+
+!README.md
+!LICENSE
+
+!.env
+!package.json
+!bun.lock
+!bun.lockb
