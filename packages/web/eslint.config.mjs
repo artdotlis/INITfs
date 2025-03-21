@@ -17,6 +17,10 @@ export default withNuxt(
             ecmaVersion: 'latest',
             sourceType: 'module',
         },
+        rules: {
+            'no-unused-vars': 'off',
+            '@typescript-eslint/no-unused-vars': 'error',
+        },
         settings: {
             'import-x/resolver': {
                 name: 'tsResolver',

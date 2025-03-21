@@ -1,8 +1,13 @@
 import { defineNuxtConfig } from 'nuxt/config';
 import { loadEnv } from 'vite';
 import Path from 'path';
+import * as yaml from 'js-yaml';
+import fs from 'node:fs';
+import type { RunTimeConfig } from './src/server/types/runtimeConfig';
+import isRunTimeConfig from './src/server/types/runtimeConfig';
 
 const LOCAL_DIR = Path.resolve(__dirname);
+const ROOT_DIR = Path.resolve(__dirname, '../../');
 
 function getPort(): number {
     return parseInt(process.env['NODE_PORT'] ?? '8080', 10);
@@ -16,12 +21,18 @@ function getEnv(): string {
     return process.env['NODE_ENV'] ?? 'development';
 }
 
-const ENV = loadEnv(getEnv(), LOCAL_DIR, '') as {
+const ENV_GLOB = loadEnv(getEnv(), ROOT_DIR, '') as {
+    CONFIG_MAIN: string;
+};
+
+const ENV_WEB = loadEnv(getEnv(), LOCAL_DIR, '') as {
     WEB_APP_ROOT: string;
     APP_WEB: string;
     APP_WEB_PUB_ROOT: string;
     APP_WEB_SERVER_ROOT: string;
+    APP_WEB_SRC_ROOT: string;
 };
+
 function isStage(): boolean {
     if (!('STAGE' in process.env)) {
         return false;
@@ -29,19 +40,35 @@ function isStage(): boolean {
     return process.env['STAGE'] === 'true';
 }
 function getAppMain(): string {
-    const main = process.env['APP_WEB_SHADOW'] ?? ENV.APP_WEB;
+    const main = process.env['APP_WEB_SHADOW'] ?? ENV_WEB.APP_WEB;
     return main;
 }
 
 function getAppMainPub(): string {
-    return Path.resolve(getAppMain(), ENV.APP_WEB_PUB_ROOT);
+    return Path.resolve(getAppMain(), ENV_WEB.APP_WEB_PUB_ROOT);
 }
+
 function getAppMainSer(): string {
-    return Path.resolve(getAppMain(), ENV.APP_WEB_SERVER_ROOT);
+    return Path.resolve(getAppMain(), ENV_WEB.APP_WEB_SERVER_ROOT);
+}
+
+function createRunTimeConf(): RunTimeConfig & { [index: string]: string } {
+    const conf = yaml.load(
+        fs.readFileSync(Path.resolve(ROOT_DIR, ENV_GLOB.CONFIG_MAIN)).toString()
+    );
+    if (isRunTimeConfig(conf)) {
+        return conf;
+    }
+    throw new Error('server configuration is misformed');
 }
 
 export default defineNuxtConfig({
+    future: {
+        compatibilityVersion: 4,
+    },
     compatibilityDate: '2025-03-17',
+    runtimeConfig: createRunTimeConf(),
+    srcDir: ENV_WEB.APP_WEB_SRC_ROOT,
     $production: {
         devtools: {
             enabled: false,
@@ -85,5 +112,9 @@ export default defineNuxtConfig({
     },
     security: {
         nonce: true,
+        removeLoggers: true,
+    },
+    imports: {
+        autoImport: false,
     },
 });

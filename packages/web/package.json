@@ -7,15 +7,16 @@
         "build": "nuxt build",
         "dev": "nuxt dev",
         "serve": "PORT=$NODE_PORT HOST=$NODE_HOST bun run $APP_SERVER",
-        "lint": "bun run lint:eslint && bun run lint:knip",
+        "lint": "bun run lint:eslint && bun run lint:types && bun run lint:knip",
         "lint:knip": "knip",
         "lint:eslint": "eslint --fix",
+        "lint:types": "nuxt typecheck",
         "profile": "PORT=$NODE_PORT HOST=$NODE_HOST nuxt analyze"
     },
     "dependencies": {
         "@nuxt/image": "^1.9",
+        "nuxt": "^3.16.1",
         "nuxt-security": "^2.2",
-        "nuxt": "^3.16",
         "vue": "^3.5",
         "vue-router": "^4.5"
     },
@@ -26,6 +27,9 @@
         "eslint-import-resolver-typescript": "^4.2",
         "eslint-plugin-import-x": "^4.8",
         "knip": "^5.46",
-        "vite": "^6.2"
+        "vite": "^6.2",
+        "vue-tsc": "^2.2",
+        "js-yaml": "^4.1",
+        "@types/js-yaml": "^4.0"
     }
 }

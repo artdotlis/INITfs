@@ -21,8 +21,6 @@ build: setupBun postInstall
 	$(BUN) install --frozen-lockfile
 
 setupGit:
-	git config diff.lockb.textconv bun
-	git config diff.lockb.binary true
 	git config core.editor vim
 	git lfs install --force
 
@@ -59,19 +57,22 @@ runChecks: dev
 createBuild: NODE_ENV = production
 createBuild: cleanBuild
 	[ 'true' = "$(STAGE)" ] && echo "STAGE -> $(STAGE)" || echo "NOT STAGE"
-	[ -d $(ROOT_MAKEFILE)/$(EXTRA_DIR) ] && $(BUN) run build || $(shell echo "FAILED" && exit 1)
+	[ -d $(ROOT_MAKEFILE)/$(EXTRA_ASSETS_DIR) ] && [ -d $(ROOT_MAKEFILE)/$(EXTRA_PUBLIC_DIR) ] \
+		&& $(BUN) run build || $(shell echo "FAILED" && exit 1)
 
 runBuild: build createBuild	
 
 runStage: STAGE = true
 runStage: NODE_ENV = production
 runStage: build createBuild		
-	[ -d $(ROOT_MAKEFILE)/$(EXTRA_DIR) ] && $(BUN) run serve || $(shell echo "FAILED" && exit 1)
+	[ -d $(ROOT_MAKEFILE)/$(EXTRA_ASSETS_DIR) ]  && [ -d $(ROOT_MAKEFILE)/$(EXTRA_PUBLIC_DIR) ] \
+		&& $(BUN) run serve || $(shell echo "FAILED" && exit 1)
 
 
 runDev: NODE_ENV = development
 runDev: dev
-	[ -d $(ROOT_MAKEFILE)/$(EXTRA_DIR) ] && $(BUN) run dev || $(shell echo "FAILED" && exit 1)
+	[ -d $(ROOT_MAKEFILE)/$(EXTRA_ASSETS_DIR) ]  && [ -d $(ROOT_MAKEFILE)/$(EXTRA_PUBLIC_DIR) ] \ 
+		&& $(BUN) run dev || $(shell echo "FAILED" && exit 1)
 
 runProfile: NODE_ENV = production
 runProfile: build
@@ -86,6 +87,5 @@ runUpdate: %: export_% dev
 export_runUpdate: NODE_ENV = development
 export_runUpdate: clean
 	echo "UPDATE NODE -> $(NODE_ENV)"
-	rm -f $(ROOT_MAKEFILE)/*.lockb
 	rm -f $(ROOT_MAKEFILE)/*.lock
 	$(BUN) update

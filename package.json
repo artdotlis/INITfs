@@ -1,6 +1,6 @@
 {
     "name": "INITfs",
-    "version": "2025.03.1",
+    "version": "2025.03.0",
     "description": "Initial bare-bone full-stack nuxt project.",
     "private": true,
     "workspaces": [
@@ -48,7 +48,8 @@
         "lint:web": "cd $WEB_PKG && bun run lint",
         "lint:shell": "shellcheck --rcfile=$CONFIG_SHELL $(find $BIN_DIR -type f -name *.sh) $(find $PKGS -type f -name *.sh)",
         "lint:format": "prettier --config $CONFIG_PRETTIER --ignore-path $CONFIG_PRETTIER_IGNORE -c $PKGS/ --write",
-        "hook": "husky && bun run hook:web",
+        "hook": "bun run hook:git && bun run hook:web",
+        "hook:git": "husky",
         "hook:web": "cd $WEB_PKG && bun run postinstall"
     },
     "lint-staged": {

@@ -1,6 +1,6 @@
 # InitFS - Full stack
 
-[![release: 2025.03.1](https://img.shields.io/badge/rel-2025.03.1-blue.svg?style=flat-square)](https://github.com/artdotlis/INITfs)
+[![release: 2025.03.0](https://img.shields.io/badge/rel-2025.03.0-blue.svg?style=flat-square)](https://github.com/artdotlis/INITfs)
 [![The Unlicense](https://img.shields.io/badge/License-Unlicense-brightgreen.svg?style=flat-square)](https://choosealicense.com/licenses/unlicense/)
 
 [![Nuxt](https://img.shields.io/badge/Nuxt-enabled-brightgreen?style=flat-square)](https://github.com/nuxt/nuxt)
