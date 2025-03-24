@@ -62,11 +62,27 @@ function createRunTimeConf(): RunTimeConfig & { [index: string]: string } {
     throw new Error('server configuration is misformed');
 }
 
+function createAppConfig() {
+    return {
+        viewTransition: false,
+        head: {
+            title: 'INITfs',
+            htmlAttrs: {
+                lang: 'en',
+            },
+            link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+            charset: 'utf-16',
+            viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
+        },
+    };
+}
+
 export default defineNuxtConfig({
     future: {
         compatibilityVersion: 4,
     },
     compatibilityDate: '2025-03-17',
+    app: createAppConfig(),
     runtimeConfig: createRunTimeConf(),
     srcDir: ENV_WEB.APP_WEB_SRC_ROOT,
     $production: {

@@ -1,7 +1,11 @@
+<script setup lang="ts">
+import { AppFooter, AppHeader } from '#components';
+</script>
+
 <template>
     <div>
-        <Header />
+        <AppHeader />
         <slot />
-        <Footer />
+        <AppFooter />
     </div>
 </template>
