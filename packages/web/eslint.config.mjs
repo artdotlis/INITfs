@@ -20,6 +20,14 @@ export default withNuxt(
         rules: {
             'no-unused-vars': 'off',
             '@typescript-eslint/no-unused-vars': 'error',
+            'import-x/no-unresolved': [
+                'error',
+                process.env['GITHUB_WORKER'] !== undefined
+                    ? {
+                        ignore: ['^(~/)?assets/extra/.+', '^/extra/.+',],
+                    }
+                    : {},
+            ],
         },
         settings: {
             'import-x/resolver': {
