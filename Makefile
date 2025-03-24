@@ -71,7 +71,7 @@ runStage: build createBuild
 
 runDev: NODE_ENV = development
 runDev: dev
-	[ -d $(ROOT_MAKEFILE)/$(EXTRA_ASSETS_DIR) ]  && [ -d $(ROOT_MAKEFILE)/$(EXTRA_PUBLIC_DIR) ] \ 
+	[ -d $(ROOT_MAKEFILE)/$(EXTRA_ASSETS_DIR) ]  && [ -d $(ROOT_MAKEFILE)/$(EXTRA_PUBLIC_DIR) ] \
 		&& $(BUN) run dev || $(shell echo "FAILED" && exit 1)
 
 runProfile: NODE_ENV = production
