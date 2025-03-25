@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { useHead, useSeoMeta } from '#app';
+import { useFetch, useHead, useSeoMeta } from '#app';
+import ApiRoutes from '#shared/utils/apiRoutes.js';
 
 useHead({
     bodyAttrs: { class: 'initfs' },
@@ -11,8 +12,10 @@ useSeoMeta({
     description: 'The main page.',
     ogDescription: 'The main page.',
 });
+
+const { data } = await useFetch<{ hello: string }>(ApiRoutes.hello);
 </script>
 
 <template>
-    <div>Hello World!</div>
+    <div>{{ data?.hello ?? 'Hi' }} World!</div>
 </template>

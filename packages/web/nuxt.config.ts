@@ -1,24 +1,25 @@
+import type { RunTimeConfig } from './src/server/types/runtimeConfig';
+import fs from 'node:fs';
+import Path from 'node:path';
+import process from 'node:process';
+import * as yaml from 'js-yaml';
 import { defineNuxtConfig } from 'nuxt/config';
 import { loadEnv } from 'vite';
-import Path from 'path';
-import * as yaml from 'js-yaml';
-import fs from 'node:fs';
-import type { RunTimeConfig } from './src/server/types/runtimeConfig';
 import isRunTimeConfig from './src/server/types/runtimeConfig';
 
 const LOCAL_DIR = Path.resolve(__dirname);
 const ROOT_DIR = Path.resolve(__dirname, '../../');
 
 function getPort(): number {
-    return parseInt(process.env['NODE_PORT'] ?? '8080', 10);
+    return Number.parseInt(process.env.NODE_PORT ?? '8080', 10);
 }
 
 function getHost(): string | undefined {
-    return process.env['NODE_HOST'];
+    return process.env.NODE_HOST;
 }
 
 function getEnv(): string {
-    return process.env['NODE_ENV'] ?? 'development';
+    return process.env.NODE_ENV ?? 'development';
 }
 
 const ENV_GLOB = loadEnv(getEnv(), ROOT_DIR, '') as {
@@ -31,16 +32,25 @@ const ENV_WEB = loadEnv(getEnv(), LOCAL_DIR, '') as {
     APP_WEB_PUB_ROOT: string;
     APP_WEB_SERVER_ROOT: string;
     APP_WEB_SRC_ROOT: string;
+    APP_WEB_SRC_SERVER: string;
 };
 
 function isStage(): boolean {
     if (!('STAGE' in process.env)) {
         return false;
     }
-    return process.env['STAGE'] === 'true';
+    return process.env.STAGE === 'true';
 }
+
+function isNotMinEnv(): boolean {
+    if (!('MIN_ENV' in process.env)) {
+        return true;
+    }
+    return process.env.MIN_ENV !== 'true';
+}
+
 function getAppMain(): string {
-    const main = process.env['APP_WEB_SHADOW'] ?? ENV_WEB.APP_WEB;
+    const main = process.env.APP_WEB_SHADOW ?? ENV_WEB.APP_WEB;
     return main;
 }
 
@@ -54,7 +64,7 @@ function getAppMainSer(): string {
 
 function createRunTimeConf(): RunTimeConfig & { [index: string]: string } {
     const conf = yaml.load(
-        fs.readFileSync(Path.resolve(ROOT_DIR, ENV_GLOB.CONFIG_MAIN)).toString()
+        fs.readFileSync(Path.resolve(ROOT_DIR, ENV_GLOB.CONFIG_MAIN)).toString(),
     );
     if (isRunTimeConfig(conf)) {
         return conf;
@@ -76,6 +86,34 @@ function createAppConfig() {
         },
     };
 }
+function getModules(dev: boolean): string[] {
+    const core = [
+        '@nuxt/fonts',
+        '@nuxt/image',
+        'nuxt-security',
+        '@nuxt/scripts',
+        '@pinia/nuxt',
+    ];
+    if (dev) {
+        return [...core, '@nuxt/eslint'];
+    }
+    return core;
+}
+
+function commonTestDevConfigs() {
+    return {
+        eslint: {
+            checker: false,
+            config: {
+                devtools: {
+                    enabled: false,
+                },
+                standalone: false,
+                autoInit: false,
+            },
+        },
+    };
+}
 
 export default defineNuxtConfig({
     future: {
@@ -85,6 +123,10 @@ export default defineNuxtConfig({
     app: createAppConfig(),
     runtimeConfig: createRunTimeConf(),
     srcDir: ENV_WEB.APP_WEB_SRC_ROOT,
+    serverDir: ENV_WEB.APP_WEB_SRC_SERVER,
+    routeRules: {
+        '/**': { swr: 3600, cache: { maxAge: 3600 } },
+    },
     $production: {
         devtools: {
             enabled: false,
@@ -93,7 +135,7 @@ export default defineNuxtConfig({
             server: isStage(),
             client: isStage(),
         },
-        modules: ['@nuxt/image', 'nuxt-security'],
+        modules: getModules(false),
     },
     $development: {
         devServer: {
@@ -101,23 +143,16 @@ export default defineNuxtConfig({
             port: getPort(),
         },
         devtools: {
-            enabled: true,
+            enabled: isNotMinEnv(),
         },
-        debug: true,
         sourcemap: {
             server: true,
             client: true,
         },
-        modules: ['@nuxt/image', 'nuxt-security', '@nuxt/eslint'],
-        eslint: {
-            checker: false,
-            config: {
-                devtools: {
-                    enabled: false,
-                },
-            },
-        },
+        modules: getModules(true),
+        ...commonTestDevConfigs(),
     },
+    plugins: [],
     nitro: {
         preset: 'bun',
         output: {
@@ -132,5 +167,8 @@ export default defineNuxtConfig({
     },
     imports: {
         autoImport: false,
+    },
+    fonts: {
+        devtools: false,
     },
 });

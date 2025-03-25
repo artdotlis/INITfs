@@ -1,9 +1,9 @@
-// used during build time, thus must be a relative path
-import isPropInObj from '../../../shared/check/isPropInObj';
 import hasProp from '../../../shared/check/hasProp';
 import isArrayStr from '../../../shared/check/isArrayStr';
+// used during build time, thus must be a relative path
+import isPropInObj from '../../../shared/check/isPropInObj';
 // ---
-interface Cache {
+interface Memory {
     host: string;
     port: number;
 }
@@ -15,13 +15,7 @@ interface Storage {
     port: number;
 }
 
-interface Logger {
-    level: string;
-    cacheDb: number;
-    key: string;
-}
-
-interface Status {
+interface MemDb {
     cacheDb: number;
     key: string;
 }
@@ -31,14 +25,14 @@ interface Data {
 }
 
 interface Model {
-    logger: Logger;
-    status: Status;
+    cache: MemDb;
+    status: MemDb;
     data: Data;
     cors: string[];
 }
 
 interface RunTimeConfig {
-    cache: Cache;
+    memory: Memory;
     storage: Storage;
     model: Model;
 }
@@ -46,7 +40,7 @@ interface RunTimeConfig {
 type ConfT = RunTimeConfig & { [index: string]: string };
 type IsTypeCheck = (obj: unknown) => boolean;
 
-const TYPES_CACHE: [string, IsTypeCheck][] = [
+const TYPES_MEMORY: [string, IsTypeCheck][] = [
     [
         'host',
         (obj: unknown): boolean => hasProp('host', obj) && typeof obj.host === 'string',
@@ -59,7 +53,7 @@ const TYPES_CACHE: [string, IsTypeCheck][] = [
 ];
 
 const TYPES_STORAGE: [string, IsTypeCheck][] = [
-    ...TYPES_CACHE,
+    ...TYPES_MEMORY,
     [
         'user',
         (obj: unknown): boolean => hasProp('user', obj) && typeof obj.user === 'string',
@@ -83,17 +77,6 @@ const TYPES_CACHE_ACCESS: [string, IsTypeCheck][] = [
     ],
 ];
 
-const TYPES_LOGGER: [string, IsTypeCheck][] = [
-    ...TYPES_CACHE_ACCESS,
-    [
-        'name',
-        (obj: unknown): boolean => hasProp('name', obj) && typeof obj.name === 'string',
-    ],
-    [
-        'level',
-        (obj: unknown): boolean => hasProp('level', obj) && typeof obj.level === 'string',
-    ],
-];
 const TYPES_STORAGE_ACCESS: [string, IsTypeCheck][] = [
     [
         'storageDb',
@@ -104,10 +87,10 @@ const TYPES_STORAGE_ACCESS: [string, IsTypeCheck][] = [
 
 const TYPES_MODEL: [string, IsTypeCheck][] = [
     [
-        'logger',
+        'cache',
         (obj: unknown): boolean => {
-            if (hasProp('logger', obj) && typeof obj.logger === 'object') {
-                return isPropInObj(obj.logger ?? {}, TYPES_LOGGER);
+            if (hasProp('cache', obj) && typeof obj.cache === 'object') {
+                return isPropInObj(obj.cache ?? {}, TYPES_CACHE_ACCESS);
             }
             return false;
         },
@@ -133,7 +116,7 @@ const TYPES_MODEL: [string, IsTypeCheck][] = [
     [
         'cors',
         (obj: unknown): boolean => {
-            if (hasProp('cors', obj) && obj.cors instanceof Array) {
+            if (hasProp('cors', obj) && Array.isArray(obj.cors)) {
                 return isArrayStr(obj.cors);
             }
             return false;
@@ -161,10 +144,10 @@ const TYPES_CONF_CON: [string, IsTypeCheck][] = [
         },
     ],
     [
-        'cache',
+        'memory',
         (obj: unknown): boolean => {
-            if (hasProp('cache', obj) && typeof obj.cache === 'object') {
-                return isPropInObj(obj.cache ?? {}, TYPES_CACHE);
+            if (hasProp('memory', obj) && typeof obj.memory === 'object') {
+                return isPropInObj(obj.memory ?? {}, TYPES_MEMORY);
             }
             return false;
         },

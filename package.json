@@ -25,8 +25,8 @@
         "typescript": "^5.8.2"
     },
     "devDependencies": {
-        "@types/bun": "^1.2.5",
-        "@types/node": "^22.13.10",
+        "@types/bun": "^1.2.6",
+        "@types/node": "^22.13.13",
         "commitizen": "^4.3.1",
         "cz-conventional-changelog": "^3.3.0",
         "husky": "^9.1.7",
@@ -50,7 +50,9 @@
         "lint:format": "prettier --config $CONFIG_PRETTIER --ignore-path $CONFIG_PRETTIER_IGNORE -c $PKGS/ --write",
         "hook": "bun run hook:git && bun run hook:web",
         "hook:git": "husky",
-        "hook:web": "cd $WEB_PKG && bun run postinstall"
+        "hook:web": "cd $WEB_PKG && bun run postinstall",
+        "test": "bun run test:web",
+        "test:web": "cd $WEB_PKG && bun run test"
     },
     "lint-staged": {
         "**/web/**/*.{ts,tsx,vue}": [

@@ -6,7 +6,7 @@ on:
         branches: [main]
 
 jobs:
-    lin_lint:
+    lin_check:
         strategy:
             fail-fast: false
         runs-on: ubuntu-latest
@@ -30,3 +30,4 @@ jobs:
                   make dev
                   export GITHUB_WORKER='true'
                   make runChecks
+                  make runTests

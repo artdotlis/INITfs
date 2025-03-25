@@ -47,6 +47,14 @@ runAct:
 	echo "starting environment"
 	bash
 
+createBuild: NODE_ENV = production
+createBuild: cleanBuild
+	[ 'true' = "$(STAGE)" ] && echo "STAGE -> $(STAGE)" || echo "NOT STAGE"
+	[ -d $(ROOT_MAKEFILE)/$(EXTRA_ASSETS_DIR) ] && [ -d $(ROOT_MAKEFILE)/$(EXTRA_PUBLIC_DIR) ] \
+		&& $(BUN) run build || $(shell echo "FAILED" && exit 1)
+
+runChecks: NODE_ENV = development
+runChecks: MIN_ENV = true
 runChecks: dev
 	$(BUN) run lint
 	$(BUN) run lint:dev
@@ -54,11 +62,16 @@ runChecks: dev
 	$(BUN) run lint:shell
 	$(BUN) run lint:format
 
-createBuild: NODE_ENV = production
-createBuild: cleanBuild
-	[ 'true' = "$(STAGE)" ] && echo "STAGE -> $(STAGE)" || echo "NOT STAGE"
-	[ -d $(ROOT_MAKEFILE)/$(EXTRA_ASSETS_DIR) ] && [ -d $(ROOT_MAKEFILE)/$(EXTRA_PUBLIC_DIR) ] \
-		&& $(BUN) run build || $(shell echo "FAILED" && exit 1)
+runTests: NODE_ENV = development
+runTests: MIN_ENV = true
+runTests: dev
+	$(BUN) run test
+
+runPreCommit: NODE_ENV = development
+runPreCommit: MIN_ENV = true
+runPreCommit: createBuild 
+	$(BUN) run lint
+	$(BUN) run test
 
 runBuild: build createBuild	
 
@@ -68,7 +81,6 @@ runStage: build createBuild
 	[ -d $(ROOT_MAKEFILE)/$(EXTRA_ASSETS_DIR) ]  && [ -d $(ROOT_MAKEFILE)/$(EXTRA_PUBLIC_DIR) ] \
 		&& $(BUN) run serve || $(shell echo "FAILED" && exit 1)
 
-
 runDev: NODE_ENV = development
 runDev: dev
 	[ -d $(ROOT_MAKEFILE)/$(EXTRA_ASSETS_DIR) ]  && [ -d $(ROOT_MAKEFILE)/$(EXTRA_PUBLIC_DIR) ] \
@@ -77,10 +89,6 @@ runDev: dev
 runProfile: NODE_ENV = production
 runProfile: build
 	$(BUN) run profile
-
-runPreCommit: NODE_ENV = development
-runPreCommit: createBuild dev
-	$(BUN) run lint
 
 runUpdate: %: export_% dev
 
