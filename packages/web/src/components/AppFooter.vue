@@ -2,10 +2,12 @@
 import { useCounterStore } from '~/stores/counter';
 
 const counter = useCounterStore();
-counter.increment();
 </script>
 
 <template>
-    <div>loaded: {{ counter.count }}</div>
     <div>FOOT</div>
+    <div>loaded: {{ counter.count }}</div>
+    <button @click="counter.increment">
+        increase
+    </button>
 </template>

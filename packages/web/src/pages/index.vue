@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useFetch, useHead, useSeoMeta } from '#app';
-import ApiRoutes from '#shared/utils/apiRoutes.js';
+import ApiRoutes from '#shared/utils/ApiRoutes';
+import HelloWorld from '~/components/HelloWorld.vue';
 
 useHead({
     bodyAttrs: { class: 'initfs' },
@@ -13,9 +14,25 @@ useSeoMeta({
     ogDescription: 'The main page.',
 });
 
-const { data } = await useFetch<{ hello: string }>(ApiRoutes.hello);
+await useFetch<{ hello: string }>(ApiRoutes.hello, {
+    key: 'hello',
+});
+
+function clientLogError(error: unknown) {
+    console.error(`[APP-LOCAL-ERR] ${error}`);
+}
 </script>
 
 <template>
-    <div>{{ data?.hello ?? 'Hi' }} World!</div>
+    <NuxtLayout>
+        <NuxtErrorBoundary @error="clientLogError">
+            <HelloWorld />
+            <template #error="{ error, clearError }">
+                local {{ error }}
+                <button @click="clearError">
+                    clear error
+                </button>
+            </template>
+        </NuxtErrorBoundary>
+    </NuxtLayout>
 </template>

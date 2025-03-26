@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { NuxtError } from '#app';
-import UiRoutes from '#shared/utils/uiRoutes';
+import { clearError } from '#app';
+import UiRoutes from '#shared/utils/UiRoutes';
 
 defineProps({
     error: {
@@ -8,14 +9,16 @@ defineProps({
         required: false,
     },
 });
-const to = UiRoutes.root;
+const to = () => clearError({ redirect: UiRoutes.root });
 </script>
 
 <template>
-    <div>
-        <h1>{{ error?.statusCode ?? 500 }}</h1>
-        <NuxtLink :to="to">
-            Go back home
-        </NuxtLink>
-    </div>
+    <NuxtLayout name="error">
+        <div>
+            <h1>{{ error?.statusCode ?? 500 }}</h1>
+            <button @click="to">
+                Go back home
+            </button>
+        </div>
+    </NuxtLayout>
 </template>

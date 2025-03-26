@@ -1,6 +1,6 @@
+// used during build time, thus must be a relative path
 import hasProp from '../../../shared/check/hasProp';
 import isArrayStr from '../../../shared/check/isArrayStr';
-// used during build time, thus must be a relative path
 import isPropInObj from '../../../shared/check/isPropInObj';
 // ---
 interface Memory {
@@ -15,19 +15,10 @@ interface Storage {
     port: number;
 }
 
-interface MemDb {
-    cacheDb: number;
-    key: string;
-}
-
-interface Data {
-    storageDb: string;
-}
-
 interface Model {
-    cache: MemDb;
-    status: MemDb;
-    data: Data;
+    cacheDb: number;
+    statusDb: number;
+    dataDb: string;
     cors: string[];
 }
 
@@ -65,52 +56,23 @@ const TYPES_STORAGE: [string, IsTypeCheck][] = [
     ],
 ];
 
-const TYPES_CACHE_ACCESS: [string, IsTypeCheck][] = [
-    [
-        'key',
-        (obj: unknown): boolean => hasProp('key', obj) && typeof obj.key === 'string',
-    ],
-    [
-        'cacheDb',
-        (obj: unknown): boolean =>
-            hasProp('cacheDb', obj) && typeof obj.cacheDb === 'number' && obj.cacheDb > 0,
-    ],
-];
-
-const TYPES_STORAGE_ACCESS: [string, IsTypeCheck][] = [
-    [
-        'storageDb',
-        (obj: unknown): boolean =>
-            hasProp('storageDb', obj) && typeof obj.storageDb === 'string',
-    ],
-];
-
 const TYPES_MODEL: [string, IsTypeCheck][] = [
     [
-        'cache',
+        'cacheDb',
         (obj: unknown): boolean => {
-            if (hasProp('cache', obj) && typeof obj.cache === 'object') {
-                return isPropInObj(obj.cache ?? {}, TYPES_CACHE_ACCESS);
-            }
-            return false;
+            return hasProp('cacheDb', obj) && typeof obj.cacheDb === 'number';
         },
     ],
     [
-        'status',
+        'statusDb',
         (obj: unknown): boolean => {
-            if (hasProp('status', obj) && typeof obj.status === 'object') {
-                return isPropInObj(obj.status ?? {}, TYPES_CACHE_ACCESS);
-            }
-            return false;
+            return hasProp('statusDb', obj) && typeof obj.statusDb === 'number';
         },
     ],
     [
-        'data',
+        'dataDb',
         (obj: unknown): boolean => {
-            if (hasProp('data', obj) && typeof obj.data === 'object') {
-                return isPropInObj(obj.data ?? {}, TYPES_STORAGE_ACCESS);
-            }
-            return false;
+            return hasProp('dataDb', obj) && typeof obj.dataDb === 'string';
         },
     ],
     [

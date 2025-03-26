@@ -26,7 +26,7 @@
     "dockerComposeFile": ["../docker-compose.yml", "dev.docker-compose.yml"],
     "name": "initfs",
     "postAttachCommand": "make dev",
-    "runServices": ["nginx", "redis"],
+    "runServices": ["nginx", "redis", "mongo"],
     "service": "dev",
     "shutdownAction": "stopCompose",
     "updateRemoteUserUID": true,

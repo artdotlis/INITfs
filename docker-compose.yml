@@ -27,6 +27,36 @@ services:
             - 6381:6379
         networks:
             - initfs
+    mongo:
+        env_file:
+            - .env
+        image: mongodb/mongodb-community-server:latest
+        restart: always
+        healthcheck:
+            test:
+                [
+                    'CMD',
+                    'mongosh',
+                    '--eval',
+                    '''db.runCommand("ping").ok''',
+                    'localhost:27017/test',
+                    '--quiet',
+                ]
+            interval: 6s
+            timeout: 6s
+            retries: 10
+        environment:
+            - MONGO_INITDB_ROOT_USERNAME=root
+            - MONGO_INITDB_ROOT_PASSWORD=password2202
+            - MONGO_USER_NAME=initfs
+            - MONGO_USER_PASSWORD=password2
+            - MONGO_DATABASE=initfs
+        ports:
+            - 27017:27017
+        volumes:
+            - ./${BIN_INIT_MONGO}:/docker-entrypoint-initdb.d/init_mongo_db.sh:ro
+        networks:
+            - initfs
     app:
         env_file:
             - .env
@@ -51,6 +81,8 @@ services:
             - initfs
         depends_on:
             redis:
+                condition: service_healthy
+            mongo:
                 condition: service_healthy
 networks:
     initfs:
