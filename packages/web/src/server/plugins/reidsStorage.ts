@@ -9,6 +9,7 @@ function cacheDriver(runTime: RunTimeConfig) {
         host: runTime.memory.host,
         port: runTime.memory.port,
         db: runTime.model.cache.cacheDb,
+        ttl: 60 * 60 * 24 * 7,
     });
 }
 
