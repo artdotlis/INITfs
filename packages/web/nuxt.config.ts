@@ -1,11 +1,11 @@
-import type { RunTimeConfig } from './src/server/types/runtimeConfig';
+import type { RunTimeConfigT } from './src/server/types/runtime_config';
 import fs from 'node:fs';
 import Path from 'node:path';
 import process from 'node:process';
 import * as yaml from 'js-yaml';
 import { defineNuxtConfig } from 'nuxt/config';
 import { loadEnv } from 'vite';
-import isRunTimeConfig from './src/server/types/runtimeConfig';
+import RunTimeConfig from './src/server/types/runtime_config';
 
 const LOCAL_DIR = Path.resolve(__dirname);
 const ROOT_DIR = Path.resolve(__dirname, '../../');
@@ -62,14 +62,11 @@ function getAppMainSer(): string {
     return Path.resolve(getAppMain(), ENV_WEB.APP_WEB_SERVER_ROOT);
 }
 
-function createRunTimeConf(): RunTimeConfig & { [index: string]: string } {
+function createRunTimeConf(): RunTimeConfigT {
     const conf = yaml.load(
         fs.readFileSync(Path.resolve(ROOT_DIR, ENV_GLOB.CONFIG_MAIN)).toString(),
     );
-    if (isRunTimeConfig(conf)) {
-        return conf;
-    }
-    throw new Error('server configuration is misformed');
+    return RunTimeConfig.parse(conf);
 }
 
 function createAppConfig() {

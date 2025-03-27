@@ -1,9 +1,9 @@
-import type { RunTimeConfig } from '~/server/types/runtimeConfig';
+import type { RunTimeConfigT } from '~/server/types/runtime_config';
 import { defineNitroPlugin, useRuntimeConfig, useStorage } from '#imports';
 import StorageKeys from '#shared/utils/StorageKeys';
 import redisDriver from 'unstorage/drivers/redis';
 
-function cacheDriver(runTime: RunTimeConfig) {
+function cacheDriver(runTime: RunTimeConfigT) {
     return redisDriver({
         base: StorageKeys.cache,
         host: runTime.memory.host,
@@ -13,7 +13,7 @@ function cacheDriver(runTime: RunTimeConfig) {
     });
 }
 
-function statusDriver(runTime: RunTimeConfig) {
+function statusDriver(runTime: RunTimeConfigT) {
     return redisDriver({
         base: StorageKeys.status,
         host: runTime.memory.host,
