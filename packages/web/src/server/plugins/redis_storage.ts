@@ -1,4 +1,4 @@
-import type { RunTimeConfigT } from '~/server/types/runtime_config';
+import type { RunTimeConfigT } from '~/server/types/configs/runtime_config';
 import { defineNitroPlugin, useRuntimeConfig, useStorage } from '#imports';
 import StorageKeys from '#shared/utils/StorageKeys';
 import redisDriver from 'unstorage/drivers/redis';

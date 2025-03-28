@@ -26,8 +26,8 @@ export default withNuxt(
                     'error',
                     process.env.GITHUB_WORKER !== undefined
                         ? {
-                            ignore: ['^(~/)?assets/extra/.+', '^/extra/.+'],
-                        }
+                              ignore: ['^(~/)?assets/extra/.+', '^/extra/.+'],
+                          }
                         : {},
                 ],
                 'no-console': 'warn',

@@ -1,11 +1,11 @@
-import type { RunTimeConfigT } from './src/server/types/runtime_config';
+import type { RunTimeConfigT } from './src/server/types/configs/runtime_config';
 import fs from 'node:fs';
 import Path from 'node:path';
 import process from 'node:process';
 import * as yaml from 'js-yaml';
 import { defineNuxtConfig } from 'nuxt/config';
 import { loadEnv } from 'vite';
-import RunTimeConfig from './src/server/types/runtime_config';
+import RunTimeConfig from './src/server/types/configs/runtime_config';
 
 const LOCAL_DIR = Path.resolve(__dirname);
 const ROOT_DIR = Path.resolve(__dirname, '../../');

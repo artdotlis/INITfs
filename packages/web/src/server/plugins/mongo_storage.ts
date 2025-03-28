@@ -1,7 +1,8 @@
 import { defineNitroPlugin, useRuntimeConfig } from '#imports';
 import mongoose from 'mongoose';
+import HelloDB from '~/server/model/hello';
 
-export default defineNitroPlugin((_nitro) => {
+export default defineNitroPlugin((_nitro): void => {
     const runTime = useRuntimeConfig();
     try {
         const user = runTime.storage.user;
@@ -10,12 +11,10 @@ export default defineNitroPlugin((_nitro) => {
         const port = runTime.storage.port;
         const dbn = runTime.model.dataDb;
         const mUrl = `mongodb://${user}:${upw}@${host}:${port}/${dbn}`;
-        mongoose
-            .connect(mUrl)
-            .then(() => {
-                console.log('MongoDB connected');
-            })
-            .catch((err: unknown) => console.error('MongoDB connection failed', err));
+        void mongoose.connect(mUrl).then(() => {
+            console.log('MongoDB connected');
+            void new HelloDB({ hello: 'Hey', language: 'US' }).save().catch(() => {});
+        });
     }
     catch (err: unknown) {
         console.error('MongoDB connection failed', err);
