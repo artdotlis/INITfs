@@ -7,6 +7,7 @@ import { defineNuxtConfig } from 'nuxt/config';
 import { loadEnv } from 'vite';
 import RunTimeConfig from './src/server/types/configs/runtime_config';
 
+type FontStyles = 'normal' | 'italic' | 'oblique';
 const LOCAL_DIR = Path.resolve(__dirname);
 const ROOT_DIR = Path.resolve(__dirname, '../../');
 
@@ -97,6 +98,12 @@ function getModules(dev: boolean): string[] {
     return core;
 }
 
+function routeRules() {
+    return {
+        '/**': { swr: 3600, cache: { maxAge: 3600 } },
+    };
+}
+
 function commonTestDevConfigs() {
     return {
         eslint: {
@@ -112,6 +119,58 @@ function commonTestDevConfigs() {
     };
 }
 
+function nitroConfigs() {
+    return {
+        preset: 'bun',
+        output: {
+            dir: getAppMain(),
+            publicDir: getAppMainPub(),
+            serverDir: getAppMainSer(),
+        },
+    };
+}
+
+function securityConfigs() {
+    return {
+        nonce: true,
+        removeLoggers: true,
+    };
+}
+
+function fontsConfigs() {
+    return {
+        devtools: false,
+        defaults: {
+            weights: [400],
+            styles: ['normal', 'italic'] as FontStyles[],
+            subsets: ['greek-ext', 'greek', 'latin-ext', 'latin'],
+        },
+        families: [{ name: 'Rubik', provider: 'google' }],
+        provider: 'google',
+        processCSSVariables: true,
+        assets: {
+            prefix: '/_fonts/',
+        },
+    };
+}
+
+function imageConfigs() {
+    return {
+        quality: 80,
+        format: ['webp', 'avif', 'png'],
+        screens: {
+            'xs': 320,
+            'sm': 640,
+            'md': 768,
+            'lg': 1024,
+            'xl': 1280,
+            'xxl': 1536,
+            '2xl': 1536,
+        },
+        domains: [],
+    };
+}
+
 export default defineNuxtConfig({
     future: {
         compatibilityVersion: 4,
@@ -121,9 +180,7 @@ export default defineNuxtConfig({
     runtimeConfig: createRunTimeConf(),
     srcDir: ENV_WEB.APP_WEB_SRC_ROOT,
     serverDir: ENV_WEB.APP_WEB_SRC_SERVER,
-    routeRules: {
-        '/**': { swr: 3600, cache: { maxAge: 3600 } },
-    },
+    routeRules: routeRules(),
     $production: {
         devtools: {
             enabled: false,
@@ -149,34 +206,12 @@ export default defineNuxtConfig({
         modules: getModules(true),
         ...commonTestDevConfigs(),
     },
-    plugins: [],
-    nitro: {
-        preset: 'bun',
-        output: {
-            dir: getAppMain(),
-            publicDir: getAppMainPub(),
-            serverDir: getAppMainSer(),
-        },
-    },
-    security: {
-        nonce: true,
-        removeLoggers: true,
-    },
     imports: {
         autoImport: false,
     },
-    fonts: {
-        devtools: false,
-        defaults: {
-            weights: [400],
-            styles: ['normal', 'italic'],
-            subsets: ['greek-ext', 'greek', 'latin-ext', 'latin'],
-        },
-        families: [{ name: 'Rubik', provider: 'google' }],
-        provider: 'google',
-        processCSSVariables: true,
-        assets: {
-            prefix: '/_fonts/',
-        },
-    },
+    plugins: [],
+    nitro: nitroConfigs(),
+    security: securityConfigs(),
+    fonts: fontsConfigs(),
+    image: imageConfigs(),
 });
