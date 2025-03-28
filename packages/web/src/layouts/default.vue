@@ -10,3 +10,9 @@ import { AppFooter, AppHeader, NoScript } from '#components';
         <AppFooter />
     </div>
 </template>
+
+<style lang="css">
+body {
+    font-family: 'Rubik', sans-serif;
+}
+</style>

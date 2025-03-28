@@ -167,5 +167,16 @@ export default defineNuxtConfig({
     },
     fonts: {
         devtools: false,
+        defaults: {
+            weights: [400],
+            styles: ['normal', 'italic'],
+            subsets: ['greek-ext', 'greek', 'latin-ext', 'latin'],
+        },
+        families: [{ name: 'Rubik', provider: 'google' }],
+        provider: 'google',
+        processCSSVariables: true,
+        assets: {
+            prefix: '/_fonts/',
+        },
     },
 });
