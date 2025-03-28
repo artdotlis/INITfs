@@ -12,7 +12,4 @@ make uninstall
 mkdir -p "/var/www/$APP_WEB_ROOT"
 APP_WEB_SHADOW="/var/www/$APP_WEB_ROOT" make runBuild
 
-make clean && make prod
-cp -RT node_modules "/var/www/$APP_WEB_ROOT/node_modules"
-
 echo "project installed"

@@ -9,7 +9,7 @@ update-ca-trust enable
 update-ca-trust
 dnf upgrade -y
 dnf -y install epel-release
-dnf config-manager --set-enabled powertools
+dnf config-manager --set-enabled crb
 crb enable
 dnf -y install dnf-plugins-core
 dnf upgrade --refresh -y
