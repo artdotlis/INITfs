@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { HelloRespT } from '#shared/types/api/HelloRespT';
 import { useFetch, useHead, useSeoMeta } from '#app';
+import { defineOgImageComponent } from '#imports';
 import HelloResp from '#shared/types/api/HelloRespT';
 import ApiRoutes from '#shared/utils/ApiRoutes';
 import HelloWorld from '~/components/HelloWorld.vue';
@@ -11,10 +12,13 @@ useHead({
 
 useSeoMeta({
     title: 'INITfs - main',
-    ogTitle: 'INITfs - main',
     description: 'The main page.',
-    ogDescription: 'The main page.',
 });
+
+defineOgImageComponent('InitFS', {
+    title: 'Hello OG Image 👋',
+});
+
 const storeKey = 'hello';
 await useFetch<HelloRespT>(ApiRoutes.hello, {
     key: storeKey,

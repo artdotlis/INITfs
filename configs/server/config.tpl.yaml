@@ -10,4 +10,8 @@ model:
     cacheDb: 6
     statusDb: 7
     dataDb: 'initfs'
+web:
     cors: []
+    protocol: 'http'
+    host: 'localhost'
+    port: 9010

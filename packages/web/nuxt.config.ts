@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import Path from 'node:path';
 import process from 'node:process';
 import * as yaml from 'js-yaml';
+import { defineOrganization } from 'nuxt-schema-org/schema';
 import { defineNuxtConfig } from 'nuxt/config';
 import { loadEnv } from 'vite';
 import RunTimeConfig from './src/server/types/configs/runtime_config';
@@ -15,8 +16,8 @@ function getPort(): number {
     return Number.parseInt(process.env.NODE_PORT ?? '8080', 10);
 }
 
-function getHost(): string | undefined {
-    return process.env.NODE_HOST;
+function getHost(): string {
+    return process.env.NODE_HOST ?? 'localhost';
 }
 
 function getEnv(): string {
@@ -92,6 +93,14 @@ function getModules(dev: boolean): string[] {
         '@nuxt/scripts',
         '@pinia/nuxt',
     ];
+    // SEO
+    core.push(
+        '@nuxtjs/robots',
+        '@nuxtjs/sitemap',
+        'nuxt-og-image',
+        'nuxt-schema-org',
+        'nuxt-link-checker',
+    );
     if (dev) {
         return [...core, '@nuxt/eslint'];
     }
@@ -171,16 +180,58 @@ function imageConfigs() {
     };
 }
 
+const RTC = createRunTimeConf();
+
+function soeConfigs() {
+    return {
+        robots: {
+            blockNonSeoBots: true,
+            blockAiBots: false,
+        },
+        sitemap: {
+            sitemapsPathPrefix: '/',
+            exclude: ['/api/**'],
+            sitemaps: {
+                sitemaps: true,
+                defaultSitemapsChunkSize: 2000,
+            },
+        },
+        schemaOrg: {
+            defaults: false,
+            identity: defineOrganization({
+                '@type': ['Organization'],
+                'name': 'INIT solutions',
+                'logo': '/_images/image.png',
+            }),
+        },
+        linkChecker: {
+            failOnError: true,
+            showLiveInspections: true,
+            excludeLinks: [],
+        },
+        ogImage: {
+            enabled: isNotMinEnv(),
+        },
+    };
+}
+
 export default defineNuxtConfig({
     future: {
         compatibilityVersion: 4,
     },
+    ssr: true,
     compatibilityDate: '2025-03-17',
     app: createAppConfig(),
-    runtimeConfig: createRunTimeConf(),
+    runtimeConfig: RTC,
     srcDir: ENV_WEB.APP_WEB_SRC_ROOT,
     serverDir: ENV_WEB.APP_WEB_SRC_SERVER,
     routeRules: routeRules(),
+
+    site: {
+        url: `${RTC.web.protocol}://${RTC.web.host}:${RTC.web.port}`,
+        name: 'INITfs',
+    },
+
     $production: {
         devtools: {
             enabled: false,
@@ -191,6 +242,7 @@ export default defineNuxtConfig({
         },
         modules: getModules(false),
     },
+
     $development: {
         devServer: {
             host: getHost(),
@@ -206,12 +258,15 @@ export default defineNuxtConfig({
         modules: getModules(true),
         ...commonTestDevConfigs(),
     },
+
     imports: {
         autoImport: false,
     },
+
     plugins: [],
     nitro: nitroConfigs(),
     security: securityConfigs(),
     fonts: fontsConfigs(),
     image: imageConfigs(),
+    ...soeConfigs(),
 });

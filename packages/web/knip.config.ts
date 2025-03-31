@@ -5,6 +5,7 @@ export default {
         'src/app.vue',
         'src/error.vue',
         'src/pages/**/*.vue',
+        'src/components/**/*.vue',
         'src/layouts/**.vue',
         'src/plugins/**/*.ts',
         'src/middleware/**/*.ts',
@@ -21,10 +22,11 @@ export default {
     ignoreDependencies: [
         '@nuxt/.*',
         '@nuxtjs/.*',
-        'nuxt-security',
+        'nuxt-*',
         'happy-dom',
         '@vue/*',
         '@pinia/nuxt',
+        '@unhead/vue',
     ],
     compilers: {
         css: (text: string) => [...text.matchAll(/(?<=@)import[^;]+/g)].join('\n'),
