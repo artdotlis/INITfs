@@ -10,7 +10,7 @@ mkdir -p "$ROOT/$EXTRA_PUBLIC_DIR"
 
 echo "create empty config"
 mkdir -p "$(dirname "$ROOT/$CONFIG_MAIN")"
-if [ ! -f "$ROOT/$CONFIG_STCONFIG_MAINRINF" ]; then
+if [ ! -f "$ROOT/$CONFIG_MAIN" ]; then
     cat "$ROOT/$TEMPL_CONFIG_MAIN" >"$ROOT/$CONFIG_MAIN"
 fi
 
