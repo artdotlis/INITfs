@@ -24,7 +24,7 @@ services:
             timeout: 6s
             retries: 10
         ports:
-            - 6381:6379
+            - 6384:6379
         networks:
             - initfs
     mongo:
@@ -52,7 +52,7 @@ services:
             - MONGO_USER_PASSWORD=password2
             - MONGO_DATABASE=initfs
         ports:
-            - 27017:27017
+            - 27018:27017
         volumes:
             - ./${BIN_INIT_MONGO}:/docker-entrypoint-initdb.d/init_mongo_db.sh:ro
         networks:

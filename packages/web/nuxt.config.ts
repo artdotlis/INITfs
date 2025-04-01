@@ -154,8 +154,8 @@ function fontsConfigs() {
             styles: ['normal', 'italic'] as FontStyles[],
             subsets: ['greek-ext', 'greek', 'latin-ext', 'latin'],
         },
-        families: [{ name: 'Rubik', provider: 'google' }],
-        provider: 'google',
+        families: [],
+        provider: 'fontsource',
         processCSSVariables: true,
         assets: {
             prefix: '/_fonts/',
