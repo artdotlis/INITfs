@@ -10,6 +10,6 @@ echo "install project"
 make uninstall
 
 mkdir -p "/var/www/$APP_WEB_ROOT"
-APP_WEB_SHADOW="/var/www/$APP_WEB_ROOT" make runBuild
+APP_WEB_SHADOW="/var/www/$APP_WEB_ROOT" PURGE_CSS="true" make runBuild
 
 echo "project installed"

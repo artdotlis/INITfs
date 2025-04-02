@@ -43,6 +43,7 @@
         "knip": "^5.46",
         "vite": "^6.2",
         "vitest": "^3.0",
-        "vitest-environment-nuxt": "^1.0"
+        "vitest-environment-nuxt": "^1.0",
+        "purgecss": "^7.0"
     }
 }

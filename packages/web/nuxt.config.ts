@@ -37,6 +37,10 @@ const ENV_WEB = loadEnv(getEnv(), LOCAL_DIR, '') as {
     APP_WEB_SRC_SERVER: string;
 };
 
+function getPurgeCss(): string {
+    return process.env.PURGE_CSS ?? 'false';
+}
+
 function isStage(): boolean {
     if (!('STAGE' in process.env)) {
         return false;
@@ -101,6 +105,9 @@ function getModules(dev: boolean): string[] {
         'nuxt-schema-org',
         'nuxt-link-checker',
     );
+    if (!dev && getPurgeCss() === 'true') {
+        return [...core, './modules/purgecss'];
+    }
     if (dev) {
         return [...core, '@nuxt/eslint'];
     }

@@ -7,7 +7,7 @@ ROOT="$(dirname "$(realpath "$0")")/../.."
 ROOT_ENV="$ROOT/.env"
 ENV_FILES=("$ROOT_ENV" "$WEB_ENV")
 
-ALL_ENV=("MAKEFILE_LIST" "HOME" "PATH" "STAGE" "APP_WEB_SHADOW")
+ALL_ENV=("MAKEFILE_LIST" "HOME" "PATH" "STAGE" "PURGE_CSS" "APP_WEB_SHADOW")
 
 check_env_uniqueness() {
     cmd="$(awk 'match($0, /^.*=/) {print substr($0, RSTART, RLENGTH-1)}' "$1")"
