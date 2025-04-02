@@ -1,4 +1,4 @@
-import type { RunTimeConfigT } from './src/server/types/configs/runtime_config';
+import type { RunTimeConfigT } from './shared/types/runtime_config';
 import fs from 'node:fs';
 import Path from 'node:path';
 import process from 'node:process';
@@ -6,7 +6,7 @@ import * as yaml from 'js-yaml';
 import { defineOrganization } from 'nuxt-schema-org/schema';
 import { defineNuxtConfig } from 'nuxt/config';
 import { loadEnv } from 'vite';
-import RunTimeConfig from './src/server/types/configs/runtime_config';
+import RunTimeConfig from './src/server/schema/config/runtime_config';
 
 type FontStyles = 'normal' | 'italic' | 'oblique';
 const LOCAL_DIR = Path.resolve(__dirname);
@@ -136,6 +136,11 @@ function nitroConfigs() {
             publicDir: getAppMainPub(),
             serverDir: getAppMainSer(),
         },
+        typescript: {
+            tsConfig: {
+                include: ['../src/server/types/*.d.ts'],
+            },
+        },
     };
 }
 
@@ -185,7 +190,7 @@ function imageConfigs() {
     };
 }
 
-const RTC = createRunTimeConf();
+const RTC: RunTimeConfigT & { [index: string]: any } = createRunTimeConf();
 
 function soeConfigs() {
     return {

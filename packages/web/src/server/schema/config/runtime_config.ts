@@ -24,6 +24,4 @@ const RunTimeConfig = z.object({
     }),
 });
 
-type RunTimeConfigT = z.infer<typeof RunTimeConfig>;
 export default RunTimeConfig;
-export type { RunTimeConfigT };

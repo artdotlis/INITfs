@@ -1,4 +1,4 @@
-import type { HelloRespT } from '#shared/types/api/HelloRespT';
+import type { HelloRespT } from '#shared/types/api_hello';
 import { defineEventHandler } from '#imports';
 import HelloDB from '~/server/model/hello';
 

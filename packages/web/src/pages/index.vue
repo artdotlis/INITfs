@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { HelloRespT } from '#shared/types/api/HelloRespT';
+import type { HelloRespT } from '#shared/types/api_hello';
 import { useFetch, useHead, useSeoMeta } from '#app';
 import { defineOgImageComponent } from '#imports';
-import HelloResp from '#shared/types/api/HelloRespT';
+import HelloResp from '#shared/schema/api/HelloResp';
 import ApiRoutes from '#shared/utils/ApiRoutes';
 import HelloWorld from '~/components/HelloWorld.vue';
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { HelloRespT } from '#shared/types/api/HelloRespT';
+import type { HelloRespT } from '#shared/types/api_hello';
 import { createError, useNuxtData } from '#app';
 import { NuxtImg } from '#components';
 
