@@ -143,6 +143,11 @@ function securityConfigs() {
     return {
         nonce: true,
         removeLoggers: true,
+        headers: {
+            contentSecurityPolicy: {
+                'script-src-attr': ['\'nonce-{{nonce}}\''],
+            },
+        },
     };
 }
 
