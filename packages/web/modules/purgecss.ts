@@ -44,10 +44,16 @@ async function runPurgeCss(): Promise<void> {
     }
 }
 
+function getPurgeCss(): string {
+    return process.env.PURGE_CSS ?? 'false';
+}
+
 export default defineNuxtModule((_options, nuxt) => {
-    nuxt.hook('close', async () => {
-        console.log('finished build and starting purge css');
-        await runPurgeCss();
-        console.log('purge finished');
-    });
+    if (getPurgeCss() === 'true') {
+        nuxt.hook('close', async () => {
+            console.log('finished build and starting purge css');
+            await runPurgeCss();
+            console.log('purge finished');
+        });
+    }
 });
