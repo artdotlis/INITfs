@@ -105,13 +105,20 @@ function getModules(dev: boolean): string[] {
         'nuxt-schema-org',
         'nuxt-link-checker',
     );
-    if (!dev && getPurgeCss() === 'true') {
-        return [...core, './modules/purgecss'];
-    }
+    // CUSTOM
+    core.push('./modules/purgecss');
     if (dev) {
         return [...core, '@nuxt/eslint'];
     }
     return core;
+}
+
+function customConfigs() {
+    return {
+        purgecss: {
+            enabled: getPurgeCss() === 'true',
+        },
+    };
 }
 
 function routeRules() {
@@ -286,4 +293,5 @@ export default defineNuxtConfig({
     fonts: fontsConfigs(),
     image: imageConfigs(),
     ...soeConfigs(),
+    ...customConfigs(),
 });
