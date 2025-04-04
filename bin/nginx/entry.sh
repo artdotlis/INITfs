@@ -13,4 +13,8 @@ for cnt in $(seq 1 $((PM2_WORKER - 1))); do
 done
 echo "}" >>"$CONF"
 echo "running docker $(ls -al /docker-entrypoint.sh)"
+
+echo "Adding tmp cache folder"
+mkdir -p "/tmp/ipx_cache"
+
 sh "/docker-entrypoint.sh" nginx -g "daemon off;"

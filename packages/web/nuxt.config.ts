@@ -7,6 +7,7 @@ import { defineOrganization } from 'nuxt-schema-org/schema';
 import { defineNuxtConfig } from 'nuxt/config';
 import { loadEnv } from 'vite';
 import { APP_CONF_CONST_CORE } from './shared/constants/config/app';
+import UiRoutes from './shared/constants/route/ui';
 import RunTimeConfig from './src/server/schema/config/runtime_config';
 
 type FontStyles = 'normal' | 'italic' | 'oblique';
@@ -123,9 +124,24 @@ function customConfigs() {
 }
 
 function routeRules() {
-    return {
-        '/**': { swr: 3600, cache: { maxAge: 3600 } },
+    const core: {
+        [route: string]: {
+            swr?: false | number;
+            cache?:
+                | false
+                | {
+                    swr: boolean;
+                    maxAge: number;
+                };
+        };
+    } = {
+        '/api/**': { swr: false as const, cache: false as const },
+        '/_*/**': { swr: 3600 },
     };
+    for (const route of Object.values(UiRoutes)) {
+        core[route] = { swr: 3600, cache: { swr: true, maxAge: 24 * 60 * 60 } };
+    }
+    return core;
 }
 
 function commonTestDevConfigs() {
