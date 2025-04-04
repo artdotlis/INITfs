@@ -51,7 +51,7 @@ createBuild: NODE_ENV = production
 createBuild: cleanBuild
 	[ 'true' = "$(STAGE)" ] && echo "STAGE -> $(STAGE)" || echo "NOT STAGE"
 	[ -d $(ROOT_MAKEFILE)/$(EXTRA_ASSETS_DIR) ] && [ -d $(ROOT_MAKEFILE)/$(EXTRA_PUBLIC_DIR) ] \
-		&& $(BUN) run build || $(shell echo "FAILED" && exit 1)
+		&& $(BUN) run build || (echo "FAILED"; exit 1)
 
 runChecks: NODE_ENV = development
 runChecks: MIN_ENV = true
@@ -79,12 +79,12 @@ runStage: STAGE = true
 runStage: NODE_ENV = production
 runStage: build createBuild		
 	[ -d $(ROOT_MAKEFILE)/$(EXTRA_ASSETS_DIR) ]  && [ -d $(ROOT_MAKEFILE)/$(EXTRA_PUBLIC_DIR) ] \
-		&& $(BUN) run serve || $(shell echo "FAILED" && exit 1)
+		&& $(BUN) run serve || (echo "FAILED"; exit 1)
 
 runDev: NODE_ENV = development
 runDev: dev
 	[ -d $(ROOT_MAKEFILE)/$(EXTRA_ASSETS_DIR) ]  && [ -d $(ROOT_MAKEFILE)/$(EXTRA_PUBLIC_DIR) ] \
-		&& $(BUN) run dev || $(shell echo "FAILED" && exit 1)
+		&& $(BUN) run dev ||(echo "FAILED"; exit 1)
 
 runProfile: NODE_ENV = production
 runProfile: build
