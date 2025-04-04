@@ -226,7 +226,7 @@ function soeConfigs() {
             identity: defineOrganization({
                 '@type': ['Organization'],
                 'name': 'INIT solutions',
-                'logo': '/_images/image.png',
+                'logo': '/_images/logo.webp',
             }),
         },
         linkChecker: {

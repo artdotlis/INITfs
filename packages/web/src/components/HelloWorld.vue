@@ -19,7 +19,7 @@ function throwError() {
 
 <template>
     <div>{{ hello?.hello ?? 'Hi' }} World!</div>
-    <NuxtImg src="/_images/image.png" width="80" />
+    <NuxtImg src="/_images/logo.webp" width="80" />
     <button @click="throwError">
         Panic
     </button>
