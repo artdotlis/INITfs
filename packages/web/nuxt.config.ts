@@ -6,6 +6,7 @@ import * as yaml from 'js-yaml';
 import { defineOrganization } from 'nuxt-schema-org/schema';
 import { defineNuxtConfig } from 'nuxt/config';
 import { loadEnv } from 'vite';
+import { APP_CONF_CONST_CORE } from './shared/constants/config/app';
 import RunTimeConfig from './src/server/schema/config/runtime_config';
 
 type FontStyles = 'normal' | 'italic' | 'oblique';
@@ -79,7 +80,7 @@ function createAppConfig() {
     return {
         viewTransition: false,
         head: {
-            title: 'INITfs',
+            title: APP_CONF_CONST_CORE.name,
             htmlAttrs: {
                 lang: 'en',
             },
@@ -253,7 +254,7 @@ export default defineNuxtConfig({
 
     site: {
         url: `${RTC.web.protocol}://${RTC.web.host}:${RTC.web.port}`,
-        name: 'INITfs',
+        name: APP_CONF_CONST_CORE.name,
     },
 
     $production: {

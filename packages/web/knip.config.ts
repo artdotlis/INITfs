@@ -13,6 +13,7 @@ export default {
         'src/server/routes/**/*.ts',
         'src/server/middleware/**/*.ts',
         'src/server/plugins/**/*.ts',
+        'modules/**/*.ts',
         'vitest.config.ts',
         'eslint.config.mjs',
     ],

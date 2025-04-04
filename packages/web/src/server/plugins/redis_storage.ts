@@ -1,6 +1,6 @@
 import type { RuntimeConfig } from 'nuxt/schema';
 import { defineNitroPlugin, useRuntimeConfig, useStorage } from '#imports';
-import StorageKeys from '#shared/utils/StorageKeys';
+import StorageKeys from '#shared/constants/storage/key';
 import redisDriver from 'unstorage/drivers/redis';
 
 function cacheDriver(runTime: RuntimeConfig) {

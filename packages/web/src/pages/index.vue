@@ -1,22 +1,23 @@
 <script setup lang="ts">
 import type { HelloRespT } from '#shared/types/api_hello';
-import { useFetch, useHead, useSeoMeta } from '#app';
+import { useAppConfig, useFetch, useHead, useSeoMeta } from '#app';
 import { defineOgImageComponent } from '#imports';
+import ApiRoutes from '#shared/constants/route/api';
 import HelloResp from '#shared/schema/api/HelloResp';
-import ApiRoutes from '#shared/utils/ApiRoutes';
 import HelloWorld from '~/components/HelloWorld.vue';
 
 useHead({
-    bodyAttrs: { class: 'initfs' },
+    bodyAttrs: { class: 'body' },
 });
 
+const appConf = useAppConfig();
 useSeoMeta({
-    title: 'INITfs - main',
+    title: `${appConf.name} - main`,
     description: 'The main page.',
 });
 
 defineOgImageComponent('InitFS', {
-    title: 'Hello OG Image 👋',
+    title: appConf.og.title,
 });
 
 const storeKey = 'hello';

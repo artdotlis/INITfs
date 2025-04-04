@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { NuxtError } from '#app';
 import { clearError } from '#app';
-import UiRoutes from '#shared/utils/UiRoutes';
+import UiRoutes from '#shared/constants/route/ui';
 
 defineProps({
     error: {

@@ -1,5 +1,5 @@
 import { defineEventHandler, getResponseStatus, useStorage } from '#imports';
-import StorageKeys from '#shared/utils/StorageKeys';
+import StorageKeys from '#shared/constants/storage/key';
 
 export default defineEventHandler(async (event) => {
     const status = getResponseStatus(event);

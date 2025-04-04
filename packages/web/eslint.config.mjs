@@ -18,7 +18,7 @@ export default withNuxt(
             vue: true,
             jsonc: true,
             yaml: true,
-            ignores: ['**/fixtures', '**/.nuxt'],
+            ignores: ['**/fixtures', '**/.nuxt', '**/public/extra', '**/assets/extra'],
         },
         {
             rules: {
