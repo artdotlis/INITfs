@@ -32,7 +32,6 @@ postInstall:
 	bash $(ROOT_MAKEFILE)/$(BIN_DEPLOY_FIX)
 
 cleanBuild:
-	rm -rf $(ROOT_MAKEFILE)/$(PROFILE_DIR)
 	rm -rf $(ROOT_MAKEFILE)/$(APP)
 
 clean: cleanBuild

@@ -31,7 +31,6 @@ const ENV_GLOB = loadEnv(getEnv(), ROOT_DIR, '') as {
 };
 
 const ENV_WEB = loadEnv(getEnv(), LOCAL_DIR, '') as {
-    WEB_APP_ROOT: string;
     APP_WEB: string;
     APP_WEB_PUB_ROOT: string;
     APP_WEB_SERVER_ROOT: string;

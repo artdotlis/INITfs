@@ -44,7 +44,7 @@ export default withNuxt(
                 'import-x/resolver': {
                     name: 'tsResolver',
                     resolver: tsResolver,
-                    options: { alwaysTryTypes: true, project: 'tsconfig.app.json' },
+                    options: { alwaysTryTypes: true, project: 'tsconfig.json' },
                 },
             },
         }
