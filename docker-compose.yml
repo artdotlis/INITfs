@@ -68,8 +68,8 @@ services:
             dockerfile: ./Dockerfile
             args:
                 USERNAME: runner
-                USER_UID: 1000
-                USER_GID: 1000
+                USER_UID: 1002
+                USER_GID: 1002
                 STAGE: 'false'
                 BIN_DEPLOY: ${BIN_DEPLOY}
                 DOCKER_ENV_DIR: ${DOCKER_ENV_DIR}

@@ -1,15 +1,4 @@
-FROM docker.io/rockylinux:9 AS base
-
-ARG USERNAME=runner
-ARG USER_UID=1000
-ARG USER_GID=${USER_UID}
-ARG HOME_MAIN="/home/${USERNAME}"
-
-RUN groupadd --gid ${USER_GID} ${USERNAME} \
-    && useradd --uid ${USER_UID} --gid ${USER_GID} -m -d ${HOME_MAIN} ${USERNAME} \
-    && chown ${USERNAME}:${USERNAME} -R ${HOME_MAIN}
-
-FROM base AS appbuilder
+FROM docker.io/rockylinux:9 AS appbuilder
 
 ARG BIN_DEPLOY
 ARG STAGE
@@ -20,17 +9,24 @@ WORKDIR /tmp/app
 
 RUN bash "./${BIN_DEPLOY}"
 
-FROM base AS release
+FROM docker.io/node:${NODE_VER}-alpine AS release
+
+ARG USERNAME=runner
+ARG USER_UID=1000
+ARG USER_GID=${USER_UID}
+ARG HOME_MAIN="/home/${USERNAME}"
+
+RUN adduser -u ${USER_UID} -D -h ${HOME_MAIN} ${USERNAME} \
+    && mkdir -p ${HOME_MAIN} \
+    && chown ${USERNAME}:${USERNAME} -R ${HOME_MAIN}
 
 ARG DOCKER_ENV_DIR
-ARG NODE_VER
 ARG BUN_VER
 ARG BIN_DEPLOY_REQ_SERVER
-ARG USERNAME=runner
 
 COPY ./${BIN_DEPLOY_REQ_SERVER} /install.sh
 
-RUN bash /install.sh && rm /install.sh
+RUN sh /install.sh && rm /install.sh
 
 COPY --from=appbuilder /entry.sh  /entry.sh
 COPY --from=appbuilder /health.sh  /health.sh

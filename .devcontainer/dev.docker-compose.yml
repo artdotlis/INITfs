@@ -5,7 +5,7 @@ services:
         depends_on:
             - dev
     dev:
-        user: vscode
+        user: devu
         env_file:
             - .env
         environment:
@@ -14,9 +14,9 @@ services:
             context: .
             dockerfile: .devcontainer/dev.Dockerfile
             args:
-                USERNAME: vscode
-                USER_UID: 1000
-                USER_GID: 1000
+                USERNAME: devu
+                USER_UID: 1001
+                USER_GID: 1001
                 WORK_DIR: /workspace
                 BIN_DEPLOY_PREP: ${BIN_DEPLOY_PREP}
                 BIN_DEPLOY_REQ: ${BIN_DEPLOY_REQ}

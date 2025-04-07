@@ -30,6 +30,6 @@
     "service": "dev",
     "shutdownAction": "stopCompose",
     "updateRemoteUserUID": true,
-    "remoteUser": "vscode",
+    "remoteUser": "devu",
     "workspaceFolder": "/workspace"
 }

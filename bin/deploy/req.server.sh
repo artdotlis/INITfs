@@ -1,13 +1,9 @@
-#!/bin/bash
+#!/bin/sh
 
-echo "installing node"
-dnf -y update
-dnf -y module enable nodejs:"${NODE_VER}"
-dnf -y install nodejs npm
 echo "installing ps"
-dnf -y install procps
+apk add --no-cache procps-ng curl bash
 echo "installing bun -> /opt/bun"
-dnf -y install unzip
+apk add --no-cache unzip
 if [ ! -d "/opt/bun" ]; then
     echo "installing bun"
     curl -fsSl https://bun.sh/install | bash -s "bun-$BUN_VER"
@@ -16,7 +12,8 @@ if [ ! -d "/opt/bun" ]; then
     ln -s "/opt/bun/bin/bun" "/usr/bin/bun"
 fi
 echo "installing pm2"
-dnf -y install gcc-c++ make
+apk add --no-cache build-base make
+npm i -g npm
 npm i -g pm2
 
-dnf -y remove unzip gcc-c++ make npm
+apk del unzip build-base make curl bash
