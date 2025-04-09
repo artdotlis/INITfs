@@ -1,5 +1,6 @@
-node_modules
+**/node_modules
 /public/
-extra
-.nuxt
-.data
+**/public/extra
+**/assets/extra
+**/.nuxt
+**/.data
