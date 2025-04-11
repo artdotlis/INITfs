@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { HelloRespT } from '#shared/types/api_hello';
+import type { HelloRespT } from '#shared/@types/api_hello';
 import { useAppConfig, useFetch, useHead, useSeoMeta } from '#app';
 import { defineOgImageComponent } from '#imports';
 import ApiRoutes from '#shared/constants/route/api';
