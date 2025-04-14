@@ -1,3 +1,5 @@
+ARG NODE_VER="22"
+
 FROM docker.io/rockylinux:9 AS appbuilder
 
 ARG BIN_DEPLOY

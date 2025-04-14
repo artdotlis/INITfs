@@ -1,4 +1,4 @@
-import type { RunTimeConfigT } from './shared/types/runtime_config';
+import type { RunTimeConfigT } from './shared/@types/runtime_config';
 import fs from 'node:fs';
 import Path from 'node:path';
 import process from 'node:process';
