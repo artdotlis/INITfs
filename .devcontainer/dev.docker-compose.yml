@@ -24,4 +24,5 @@ services:
             - .:/workspace
             - ~/.config/git/config:/etc/gitconfig
         networks:
-            - initfs
+            - initfs_in
+            - initfs_out
