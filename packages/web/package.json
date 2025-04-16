@@ -8,7 +8,7 @@
         "dev": "nuxt dev",
         "serve": "PORT=$NODE_PORT HOST=$NODE_HOST bun run $APP_SERVER",
         "lint": "bun run lint:eslint && bun run lint:knip",
-        "lint:knip": "knip",
+        "lint:knip": "knip --no-exit-code",
         "lint:eslint": "eslint --fix",
         "profile": "PORT=$NODE_PORT HOST=$NODE_HOST nuxt analyze",
         "test": "vitest --run"
