@@ -18,10 +18,6 @@ function getPort(): number {
     return Number.parseInt(process.env.NODE_PORT ?? '8080', 10);
 }
 
-function getHost(): string {
-    return process.env.NODE_HOST ?? 'localhost';
-}
-
 function getEnv(): string {
     return process.env.NODE_ENV ?? 'development';
 }
@@ -285,7 +281,6 @@ export default defineNuxtConfig({
 
     $development: {
         devServer: {
-            host: getHost(),
             port: getPort(),
         },
         devtools: {

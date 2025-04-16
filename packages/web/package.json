@@ -6,11 +6,11 @@
         "postinstall": "nuxt prepare",
         "build": "nuxt build",
         "dev": "nuxt dev",
-        "serve": "PORT=$NODE_PORT HOST=$NODE_HOST bun run $APP_SERVER",
+        "serve": "PORT=$NODE_PORT bun run $APP_SERVER",
         "lint": "bun run lint:eslint && bun run lint:knip",
         "lint:knip": "knip --no-exit-code",
         "lint:eslint": "eslint --fix",
-        "profile": "PORT=$NODE_PORT HOST=$NODE_HOST nuxt analyze",
+        "profile": "PORT=$NODE_PORT nuxt analyze",
         "test": "vitest --run"
     },
     "dependencies": {

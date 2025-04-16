@@ -3,8 +3,6 @@ services:
         image: docker.io/nginx:stable-alpine
         env_file:
             - .env
-        environment:
-            - NODE_HOST=app
         command: /bin/sh /entry.sh
         networks:
             - initfs_out
@@ -13,8 +11,6 @@ services:
         volumes:
             - ./${CONFIG_WEB}:/etc/nginx/templates
             - ./${BIN_NGINX_ENTRY}:/entry.sh
-        depends_on:
-            - app
     redis:
         image: docker.io/redis:alpine
         restart: always
@@ -61,8 +57,6 @@ services:
         env_file:
             - .env
             - packages/web/.env
-        environment:
-            - NODE_HOST=app
         build:
             context: .
             dockerfile: ./Dockerfile
@@ -78,8 +72,10 @@ services:
                 BUN_VER: ${BUN_VER}
                 PM2_WORKER: ${PM2_WORKER}
         networks:
-            - initfs_in
             - initfs_out
+            - initfs_in
+        expose:
+            - ${NODE_PORT}
         depends_on:
             redis:
                 condition: service_healthy

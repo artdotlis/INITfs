@@ -9,7 +9,6 @@ export default {
         'src/error.{vue,jsx,tsx}',
         'src/pages/**/*.{vue,jsx,tsx}',
         'src/layouts/default.{vue,jsx,tsx}',
-        'src/layouts/error.{vue,jsx,tsx}',
         'src/middleware/**/*.ts',
         'src/server/api/**/*.ts',
         'src/server/routes/**/*.ts',
