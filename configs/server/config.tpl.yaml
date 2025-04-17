@@ -14,4 +14,4 @@ web:
     cors: []
     protocol: 'http'
     host: 'localhost'
-    port: 9010
+    port: 9011

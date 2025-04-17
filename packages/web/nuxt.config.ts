@@ -247,6 +247,7 @@ function soeConfigs() {
         },
         ogImage: {
             enabled: isNotMinEnv(),
+            componentDirs: ['image/og'],
         },
     };
 }
@@ -293,11 +294,10 @@ export default defineNuxtConfig({
         modules: getModules(true),
         ...commonTestDevConfigs(),
     },
-
     imports: {
         autoImport: false,
     },
-
+    telemetry: false,
     plugins: [],
     nitro: nitroConfigs(),
     security: securityConfigs(),
